@@ -1,0 +1,16 @@
+{
+  "name": "crisma-scenario-list-widget-wirecloud",
+  "version": "0.1.0",
+  "dependencies": {
+    "json3": "~3.2.6",
+    "es5-shim": "~2.1.0",
+    "crisma-scenario-list-widget-angular": "0.2.0",
+    "crisma-widget-shares": "~0.1.0"
+  },
+  "devDependencies": {},
+  "resolutions": {
+    "es5-shim": "~2.1.0",
+    "angular": "1.2.7",
+    "crisma-scenario-list-widget-angular": "0.2.0"
+  }
+}
