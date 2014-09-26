@@ -2,19 +2,25 @@ angular.module(
     'de.cismet.crisma.widgets.scenarioListWidgetWirecloud',
     [
         'de.cismet.crisma.widgets.scenarioListWidget',
-        'de.cismet.crisma.widgets.shared'
+        'de.cismet.crisma.ICMM.Worldstates',
+        'de.cismet.commons.angular.angularTools'
     ]
-).run(
+).controller(
+    'de.cismet.crisma.widgets.scenarioListWidgetWirecloud.wire',
     [
-        '$rootScope',
-        '$q',
-        'de.cismet.crisma.widgets.shared.SharedService',
-        'de.cismet.crisma.widgets.scenarioListWidget.services.ScenarioWorldstatesService',
+        '$scope',
+        'de.cismet.crisma.ICMM.Worldstates',
+        'de.cismet.commons.angular.angularTools.AngularTools',
         'DEBUG',
-        function ($rootScope, $q, SharedService, wsService, DEBUG) {
+        function (
+            $scope,
+            Worldstates,
+            AngularTools,
+            DEBUG
+        ) {
             'use strict';
 
-            var mashupPlatform, setSelectedWSWirecloud;
+            var mashupPlatform, setActiveWSWirecloud;
 
             if (typeof MashupPlatform === 'undefined') {
                 if (DEBUG) {
@@ -23,89 +29,76 @@ angular.module(
             } else {
                 // enable minification
                 mashupPlatform = MashupPlatform;
+                
+                $scope.activeWS = {};
 
-                $rootScope.$on('selectedWorldstatesChanged', function () {
-                    var i, selWsArray, selWsStringArray, stringifiedArray;
+                $scope.$watch('activeWS', function (n, o) {
+                    var id;
 
-                    selWsArray = SharedService.getSelectedWorldstates();
-
-                    if (DEBUG) {
-                        console.log('BEGIN: pushing selected worldstates event: ' + selWsArray);
+                    if (n && o && n.id && o.id && n.id === o.id) {
+                        // not rethrowing in case of same object set twice
+                        return;
                     }
 
-                    selWsStringArray = [];
-
-                    if (selWsArray) {
-                        for (i = 0; i < selWsArray.length; ++i) {
-                            selWsStringArray.push(selWsArray[i].id);
-                        }
+                    if (DEBUG) {
+                        console.log('BEGIN: pushing active worldstate event: ' + n);
                     }
 
-                    stringifiedArray = JSON.stringify(selWsStringArray);
+                    id = -1;
 
-                    if (DEBUG) {
-                        console.log('DO: pushing selected worldstates event: ' + stringifiedArray);
+                    if (n && n.id) {
+                        id = n.id;
                     }
 
-                    mashupPlatform.wiring.pushEvent('getSelectedWorldstates', stringifiedArray);
+                    if (DEBUG) {
+                        console.log('DO: pushing active worldstate event: ' + id);
+                    }
+
+                    mashupPlatform.wiring.pushEvent('getActiveWorldstate', id.toString());
 
                     if (DEBUG) {
-                        console.log('DONE: pushing selected worldstates event: ' + stringifiedArray);
+                        console.log('DONE: pushing active worldstate event: ' + id);
                     }
                 });
 
-                setSelectedWSWirecloud = function (newSelWsStringArray) {
-                    var i, resolve, setArray, selWsStringArray;
+                setActiveWSWirecloud = function (newActiveWs) {
+                    var setWs;
 
                     if (DEBUG) {
-                        console.log('BEGIN: receiving selected worldstates event: ' + newSelWsStringArray);
+                        console.log('BEGIN: receiving active worldstate event: ' + newActiveWs);
                     }
 
-                    setArray = function (arr) {
+                    setWs = function (ws) {
                         if (DEBUG) {
-                            console.log('DO: receiving selected worldstates event: ' + arr);
+                            console.log('DO: receiving active worldstate event: ' + ws);
                         }
 
-                        SharedService.setSelectedWorldstates(arr);
+                        AngularTools.safeApply($scope, function () {
+                            $scope.activeWS = ws;
+                        });
 
                         if (DEBUG) {
-                            console.log('DONE: receiving selected worldstates event: ' + arr);
+                            console.log('DONE: receiving active worldstate event: ' + ws);
                         }
                     };
 
-                    if (newSelWsStringArray) {
+                    if (newActiveWs) {
                         try {
-                            selWsStringArray = JSON.parse(newSelWsStringArray);
-
-                            if ($.isArray(selWsStringArray)) {
-                                resolve = [];
-
-                                for (i = 0; i < selWsStringArray.length; ++i) {
-                                    resolve[i] = wsService.getScenarioWorldstates().get({wsId: selWsStringArray[i]})
-                                        .$promise;
-                                }
-
-                                $q.all(resolve).then(function (selWsArray) {
-                                    setArray(selWsArray);
-                                });
-                            } else {
-                                if (DEBUG) {
-                                    console.log('not an array: ' + selWsStringArray);
-                                }
-                                setArray([]);
-                            }
+                            Worldstates.get({wsId: newActiveWs}).$promise.then(function (ws) {
+                                setWs(ws);
+                            });
                         } catch (e) {
                             if (DEBUG) {
                                 console.log(e);
                             }
-                            setArray([]);
+                            setWs({});
                         }
                     } else {
-                        setArray([]);
+                        setWs({});
                     }
                 };
 
-                mashupPlatform.wiring.registerCallback('setSelectedWorldstates', setSelectedWSWirecloud);
+                mashupPlatform.wiring.registerCallback('setActiveWorldstate', setActiveWSWirecloud);
             }
         }
     ]
@@ -117,13 +110,8 @@ angular.module(
 
             var mashupPlatform;
 
-
             if (typeof MashupPlatform === 'undefined') {
                 console.log('mashup platform not available');
-
-                $provide.constant('DEBUG', 'true');
-                $provide.constant('CRISMA_DOMAIN', 'CRISMA');
-                $provide.constant('CRISMA_ICMM_API', 'http://crisma.cismet.de/icmm_api');
             } else {
                 // enable minification
                 mashupPlatform = MashupPlatform;

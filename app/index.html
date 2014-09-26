@@ -2,7 +2,7 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7 expandfull"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8 expandfull"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9 expandfull"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js expandfull"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js expandfull" style="width: 100%; height: 100%;"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,17 +11,21 @@
         <meta name="viewport" content="width=device-width">
         <link rel="icon" type="image/png" href="images/world_leaf_16.png"/>
 
+        <link rel="stylesheet" href="styles/wire.css" />
         <!-- bower:css -->
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="bower_components/crisma-scenario-list-widget-angular/dist/styles/crisma-scenario-list-widget-angular.css" />
         <!-- endbower -->
+        
     </head>
-    <body ng-app="de.cismet.crisma.widgets.scenarioListWidgetWirecloud" class="expandfull">
+    <body style="padding: 0px; width: 100%; height: 100%;" ng-app="de.cismet.crisma.widgets.scenarioListWidgetWirecloud">
         <!--[if lt IE 7]>
           <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-
-        <scenario-worldstates-widget/>
+        
+        <div class="well well-sm" ng-controller="de.cismet.crisma.widgets.scenarioListWidgetWirecloud.wire" style="width: 100%; height: 100%;">
+            <scenario-worldstates-widget class="custom-list" selected-worldstate="activeWS"></scenario-worldstates-widget>
+        </div>
 
         <!--[if lt IE 9]>
         <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -29,13 +33,15 @@
         <![endif]-->
 
         <!-- bower:js -->
-        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/angular-resource/angular-resource.js"></script>
         <script src="bower_components/angular-commons/dist/scripts/angular-commons.js"></script>
+        <script src="bower_components/icmm_js/dist/scripts/icmm_js.js"></script>
+        <script src="bower_components/cids-node-list-widget/dist/scripts/cids-node-list-widget.js"></script>
+        <script src="bower_components/cids-node-list-widget/dist/scripts/cids-nodes-list-widget-tpl.js"></script>
         <script src="bower_components/crisma-scenario-list-widget-angular/dist/scripts/crisma-scenario-list-widget-angular.js"></script>
         <script src="bower_components/crisma-scenario-list-widget-angular/dist/scripts/crisma-scenario-list-widget-angular-tpl.js"></script>
-        <script src="bower_components/crisma-widget-shares/dist/scripts/crisma-widget-shares.js"></script>
         <!-- endbower -->
 
         <!-- build:js({.tmp,app}) scripts/crisma-scenario-list-widget-wirecloud.min.js -->

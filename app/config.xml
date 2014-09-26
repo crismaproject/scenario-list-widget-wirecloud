@@ -11,7 +11,7 @@
         <Name>crisma-scenario-list-widget-wirecloud</Name>
         <!-- Version: Current widget version number-->
         <!-- we include a build # to prevent caching by wirecloud -->
-        <Version>0.1.0.58</Version>
+        <Version>1.0.0.65</Version>
         <!-- DisplayName: Name shown in the UI of the widget -->
         <DisplayName>CRISMA Scenario List Widget</DisplayName>
         <!-- Author: Widget developer(s) -->
@@ -56,17 +56,17 @@
     <!-- Platform.Wiring element. It defines both the widget inputs and outputs -->
     <Platform.Wiring>
         <InputEndpoint
-            name="setSelectedWorldstates"
+            name="setActiveWorldstate"
             type="text"
-            label="Select worldstates"
-            description="Let's other widgets select specific worldstates. The text has to be an array of worldstate ids only so every widget has to agree on a single ICMS instance"
-            friendcode="selectedWorldstates"/>
+            label="Set Worldstate active"
+            description="Let's other widgets activate a specific worldstate. The text has to be a worldstate id only so every widget has to agree on a single ICMS instance"
+            friendcode="activeWorldstate"/>
         <OutputEndpoint
-            name="getSelectedWorldstates"
+            name="getActiveWorldstate"
             type="text"
-            label="Get the currently selected worldstates"
-            description="Let's other widgets know which worldstate is selected. The text is an array of worldstate ids only so every widget has to agree on a single ICMS instance"
-            friendcode="selectedWorldstates"/>
+            label="Get the currently active worldstate"
+            description="Let's other widgets know which worldstate is active. The text is a worldstate id only so every widget has to agree on a single ICMS instance"
+            friendcode="activeWorldstate"/>
     </Platform.Wiring>
 
     <!-- Platform.Link element. It binds the template with the actual widget's source code. -->
