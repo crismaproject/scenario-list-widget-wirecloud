@@ -1,4 +1,4 @@
-scenario-list-widget-wirecloud
+scenario-list-widget-wirecloud [![Build Status](http://ci.cismet.de/buildStatus/icon?job=scenario-list-widget-wirecloud)](https://ci.cismet.de/view/html5%20javascript/job/scenario-list-widget-wirecloud/)
 ==============================
 
 Wrapper of the [Scenario List (AngularJS)](https://github.com/crismaproject/scenario-list-widget-angular) to make it available on WireCloud.
